@@ -122,8 +122,11 @@ class HashTable:
         """
         # hash key & get index
         index = self.hash_index(key)
-        # return value
-        return self.storage[index].value
+        # if value not None return 
+        if self.storage[index] != None:
+            return self.storage[index].value
+        else:
+            return None
 
 
     def resize(self, new_capacity):
