@@ -17,6 +17,8 @@ class HashTable:
     """
     def __init__(self, capacity=8):
         # capacity dafault
+        if capacity < MIN_CAPACITY:
+            capacity = MIN_CAPACITY
         self.capacity = capacity
         self.storage = [None] * self.capacity
         self.count = 0
@@ -26,7 +28,6 @@ class HashTable:
         Return the length of the list you're using to hold the hash
         table data. (Not the number of items stored in the hash table,
         but the number of slots in the main list.)
-
         One of the tests relies on this.
         """
         return self.capacity
@@ -74,42 +75,54 @@ class HashTable:
     def put(self, key, value):
         """
         Store the value with the given key.
-
         Hash collisions should be handled with Linked List Chaining.
-
-        Implement this.
         """
         # hash key & get index
         index = self.hash_index(key)
-        # store value at index
-        self.storage[index] = HashTableEntry(key, value)
-
-
+        # create node instance
+        new_node = HashTableEntry(key, value)
+        # if list exist at index
+        node_list = self.storage[index]
+        if self.storage[index] != None:
+            # if key exist, replace value
+            self.storage[index] = new_node
+            self.storage[index].next = node_list
+        # else add node to head
+        else:
+            self.storage[index] = new_node
+        # incease count
+        self.count +=1
+  
     def delete(self, key):
         """
         Remove the value stored with the given key.
-
         Print a warning if the key is not found.
-
-        Implement this.
         """
         # hash key & get index
         index = self.hash_index(key) 
-        self.storage[index] = None
-
+        # if key exist, delete value
+        count = self.count
+        current = self.storage[index]
+        while current != None:
+            # check key
+            if current.key == key:
+                # replace next as current
+                current = current.next 
+                self.count -= 1 
+                return
+            current = current.next
+        if count == self.count:
+            print(f"Key '{key}' is not in hashtable")
 
     def get(self, key):
         """
         Retrieve the value stored with the given key.
-
         Returns None if the key is not found.
-
-        Implement this.
         """
         # hash key & get index
         index = self.hash_index(key)
-        # if value not None return 
-        if self.storage[index] != None:
+        # if key exits, return value
+        if self.storage[index].key == key:
             return self.storage[index].value
         else:
             return None
@@ -127,27 +140,38 @@ class HashTable:
 
 
 if __name__ == "__main__":
-    ht = HashTable(8)
+    table = HashTable()
+    table.put("avery", "quinn")
+    print(table.count)
+    table.put("yreva", "nniuq")
+    print(table.count)
+    table.delete("aveyr")
+    print(table.count)
+    print(table.storage)
 
-    ht.put("line_1", "'Twas brillig, and the slithy toves")
-    ht.put("line_2", "Did gyre and gimble in the wabe:")
-    ht.put("line_3", "All mimsy were the borogoves,")
-    ht.put("line_4", "And the mome raths outgrabe.")
-    ht.put("line_5", '"Beware the Jabberwock, my son!')
-    ht.put("line_6", "The jaws that bite, the claws that catch!")
-    ht.put("line_7", "Beware the Jubjub bird, and shun")
-    ht.put("line_8", 'The frumious Bandersnatch!"')
-    ht.put("line_9", "He took his vorpal sword in hand;")
-    ht.put("line_10", "Long time the manxome foe he sought--")
-    ht.put("line_11", "So rested he by the Tumtum tree")
-    ht.put("line_12", "And stood awhile in thought.")
 
-    print("")
 
-    # Test storing beyond capacity
-    for i in range(1, 13):
-        print(ht.get(f"line_{i}"))
+    # ht = HashTable(8)
 
+    # ht.put("line_1", "'Twas brillig, and the slithy toves")
+    # ht.put("line_2", "Did gyre and gimble in the wabe:")
+    # ht.put("line_3", "All mimsy were the borogoves,")
+    # ht.put("line_4", "And the mome raths outgrabe.")
+    # ht.put("line_5", '"Beware the Jabberwock, my son!')
+    # ht.put("line_6", "The jaws that bite, the claws that catch!")
+    # ht.put("line_7", "Beware the Jubjub bird, and shun")
+    # ht.put("line_8", 'The frumious Bandersnatch!"')
+    # ht.put("line_9", "He took his vorpal sword in hand;")
+    # ht.put("line_10", "Long time the manxome foe he sought--")
+    # ht.put("line_11", "So rested he by the Tumtum tree")
+    # ht.put("line_12", "And stood awhile in thought.")
+
+    # print("")
+
+    # # Test storing beyond capacity
+    # for i in range(1, 13):
+    #     print(ht.get(f"line_{i}"))
+    
     # # Test resizing
     # old_capacity = ht.get_num_slots()
     # ht.resize(ht.capacity * 2)
