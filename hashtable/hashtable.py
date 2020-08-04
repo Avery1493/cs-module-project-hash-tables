@@ -7,24 +7,19 @@ class HashTableEntry:
         self.value = value
         self.next = None
 
-
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
-
 
 class HashTable:
     """
     A hash table that with `capacity` buckets
     that accepts string keys
-
-    Implement this.
     """
-
     def __init__(self, capacity=8):
         # capacity dafault
         self.capacity = capacity
         self.storage = [None] * self.capacity
-
+        self.count = 0
 
     def get_num_slots(self):
         """
@@ -33,28 +28,20 @@ class HashTable:
         but the number of slots in the main list.)
 
         One of the tests relies on this.
-
-        Implement this.
         """
-        # Your code here
-
+        return self.capacity
 
     def get_load_factor(self):
         """
         Return the load factor for this hash table.
-
-        Implement this.
         """
-        # Your code here
-
+        # (# of items in hash table) / (total # of slots)
+        return self.count / self.capacity
 
     def fnv1(self, key):
         """
         FNV-1 Hash, 64-bit
-
-        Implement this, and/or DJB2.
         """
-
         # constants 64 bit
         FNV_prime = 1099511628211
         offset_basis = 14695981039346656037
@@ -66,12 +53,9 @@ class HashTable:
             hash = hash ^ ord(character)
         return hash
 
-
     def djb2(self, key):
         """
         DJB2 hash, 32-bit
-
-        Implement this, and/or FNV-1.
         """
         # function
         hash = 5381
@@ -110,8 +94,7 @@ class HashTable:
         Implement this.
         """
         # hash key & get index
-        index = self.hash_index(key)
-        # remove value
+        index = self.hash_index(key) 
         self.storage[index] = None
 
 
