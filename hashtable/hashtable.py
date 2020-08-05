@@ -140,53 +140,66 @@ class HashTable:
         """
         Changes the capacity of the hash table and
         rehashes all key/value pairs.
-
-        Implement this.
         """
-        # Your code here
+        # temp store old data
+        old_storage = self.storage.copy()
+        # new blank storage/ update capacity/ reset count
+        self.capacity = new_capacity
+        self.storage = [None] * self.capacity
+        self.count = 0
+
+        # iterate through old array
+        for index in range(len(old_storage)):
+            # and iterate old linked lists
+            current = old_storage[index]
+            while current != None:
+                # insert into new array / increse count
+                self.put(current.key, current.value)
+                current = current.next
+
 
 
 
 if __name__ == "__main__":
 
-    table = HashTable()
-    table.put("avery","quinn")
-    table.put("aveyr","quinn")
-    table.delete("avery")
-    table.delete("avyer")
-    print(table.storage)
-    print(table.count)
+    # table = HashTable()
+    # table.put("avery","quinn")
+    # table.put("aveyr","quinn")
+    # table.delete("avery")
+    # table.delete("avyer")
+    # print(table.storage)
+    # print(table.count)
 
-    # ht = HashTable(8)
+    ht = HashTable(8)
 
-    # ht.put("line_1", "'Twas brillig, and the slithy toves")
-    # ht.put("line_2", "Did gyre and gimble in the wabe:")
-    # ht.put("line_3", "All mimsy were the borogoves,")
-    # ht.put("line_4", "And the mome raths outgrabe.")
-    # ht.put("line_5", '"Beware the Jabberwock, my son!')
-    # ht.put("line_6", "The jaws that bite, the claws that catch!")
-    # ht.put("line_7", "Beware the Jubjub bird, and shun")
-    # ht.put("line_8", 'The frumious Bandersnatch!"')
-    # ht.put("line_9", "He took his vorpal sword in hand;")
-    # ht.put("line_10", "Long time the manxome foe he sought--")
-    # ht.put("line_11", "So rested he by the Tumtum tree")
-    # ht.put("line_12", "And stood awhile in thought.")
+    ht.put("line_1", "'Twas brillig, and the slithy toves")
+    ht.put("line_2", "Did gyre and gimble in the wabe:")
+    ht.put("line_3", "All mimsy were the borogoves,")
+    ht.put("line_4", "And the mome raths outgrabe.")
+    ht.put("line_5", '"Beware the Jabberwock, my son!')
+    ht.put("line_6", "The jaws that bite, the claws that catch!")
+    ht.put("line_7", "Beware the Jubjub bird, and shun")
+    ht.put("line_8", 'The frumious Bandersnatch!"')
+    ht.put("line_9", "He took his vorpal sword in hand;")
+    ht.put("line_10", "Long time the manxome foe he sought--")
+    ht.put("line_11", "So rested he by the Tumtum tree")
+    ht.put("line_12", "And stood awhile in thought.")
 
-    # print("")
+    print("")
 
-    # # Test storing beyond capacity
-    # for i in range(1, 13):
-    #     print(ht.get(f"line_{i}"))
+    # Test storing beyond capacity
+    for i in range(1, 13):
+        print(ht.get(f"line_{i}"))
     
-    # # Test resizing
-    # old_capacity = ht.get_num_slots()
-    # ht.resize(ht.capacity * 2)
-    # new_capacity = ht.get_num_slots()
+    # Test resizing
+    old_capacity = ht.get_num_slots()
+    ht.resize(ht.capacity * 2)
+    new_capacity = ht.get_num_slots()
 
-    # print(f"\nResized from {old_capacity} to {new_capacity}.\n")
+    print(f"\nResized from {old_capacity} to {new_capacity}.\n")
 
-    # # Test if data intact after resizing
-    # for i in range(1, 13):
-    #     print(ht.get(f"line_{i}"))
+    # Test if data intact after resizing
+    for i in range(1, 13):
+        print(ht.get(f"line_{i}"))
 
-    # print("")
+    print("")
