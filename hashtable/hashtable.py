@@ -100,17 +100,23 @@ class HashTable:
         """
         # hash key & get index
         index = self.hash_index(key) 
-        # if key exist, delete value
         count = self.count
-        current = self.storage[index]
-        while current != None:
-            # check key
-            if current.key == key:
-                # replace next as current
-                current = current.next 
-                self.count -= 1 
-                return
-            current = current.next
+        # if only one entry in list
+        if self.storage[index].key == key:
+            self.storage[index] = self.storage[index].next 
+            self.count -= 1 
+        else:
+            # go through entire list
+            current = self.storage[index]
+            prev = None
+            while current != None:
+                if current.key == key:
+                    prev.next = current.next
+                    self.count -= 1
+                    return
+                prev = current
+                current = current.next
+
         if count == self.count:
             print(f"Key '{key}' is not in hashtable")
 
@@ -121,11 +127,13 @@ class HashTable:
         """
         # hash key & get index
         index = self.hash_index(key)
-        # if key exits, return value
-        if self.storage[index].key == key:
-            return self.storage[index].value
-        else:
-            return None
+        current = self.storage[index]
+        # search for key
+        while current != None:
+            if current.key == key:
+                return current.value
+            current = current.next
+        return None
 
 
     def resize(self, new_capacity):
@@ -140,16 +148,14 @@ class HashTable:
 
 
 if __name__ == "__main__":
+
     table = HashTable()
-    table.put("avery", "quinn")
-    print(table.count)
-    table.put("yreva", "nniuq")
-    print(table.count)
-    table.delete("aveyr")
-    print(table.count)
+    table.put("avery","quinn")
+    table.put("aveyr","quinn")
+    table.delete("avery")
+    table.delete("avyer")
     print(table.storage)
-
-
+    print(table.count)
 
     # ht = HashTable(8)
 
